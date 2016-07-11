@@ -2,7 +2,7 @@ package com.skidsdev.teslaadditions.client.gui;
 
 import com.skidsdev.teslaadditions.tile.TileEntityMachine;
 
-import guicontainer.GuiContainerBase;
+import com.skidsdev.teslaadditions.guicontainer.GuiContainerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

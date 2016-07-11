@@ -4,7 +4,7 @@ import com.skidsdev.teslaadditions.client.gui.GuiFurnace;
 import com.skidsdev.teslaadditions.container.ContainerFurnace;
 import com.skidsdev.teslaadditions.utils.Helper;
 
-import guicontainer.GuiContainerFurnace;
+import com.skidsdev.teslaadditions.guicontainer.GuiContainerFurnace;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

@@ -1,4 +1,4 @@
-package guicontainer;
+package com.skidsdev.teslaadditions.guicontainer;
 
 import com.skidsdev.teslaadditions.tile.TileEntityMachine;
 

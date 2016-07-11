@@ -3,7 +3,7 @@ package com.skidsdev.teslaadditions.client.gui;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
 import com.skidsdev.teslaadditions.utils.VersionInfo;
 
-import guicontainer.GuiContainerFurnace;
+import com.skidsdev.teslaadditions.guicontainer.GuiContainerFurnace;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
