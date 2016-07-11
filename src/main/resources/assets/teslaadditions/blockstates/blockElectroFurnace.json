@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "teslaadditions:blockElectroFurnace" },
+        "facing=east":  { "model": "teslaadditions:blockElectroFurnace", "y": 90 },
+        "facing=south": { "model": "teslaadditions:blockElectroFurnace", "y": 180 },
+        "facing=west":  { "model": "teslaadditions:blockElectroFurnace", "y": 270 }
+    }
+}
