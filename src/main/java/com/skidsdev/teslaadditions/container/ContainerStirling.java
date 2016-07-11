@@ -12,18 +12,9 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ContainerStirling extends ContainerBase implements ITeslaProducer
 {
-	public static final int inputSlot = 0;
-	public static final int chargeSlot = 1;
-	
 	public ContainerStirling()
 	{
-		slots = new ItemStack[2];
-	}
-
-	@Override
-	public long getCapacity()
-	{
-		return Config.stirlingBasePowerCap;
+		super(Config.stirlingBasePowerCap);
 	}
 
 	@Override
@@ -44,34 +35,8 @@ public class ContainerStirling extends ContainerBase implements ITeslaProducer
 		
 		return generatedPower;
 	}
-
-	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulated)
-	{
-		if (slot < slots.length && slot >= 0)
-		{
-			//Inserting into chargeSlot, and item can provide power
-			if (slot == chargeSlot && stack.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, null))
-			{
-				return insertIntoChargeSlot(stack, simulated);
-			}
-			//Inserting into inputSlot, and item can be smelted
-			else if (slot == inputSlot && GameRegistry.getFuelValue(stack) > 0)
-			{
-				return insertIntoInputSlot(stack, simulated);
-			}
-		}
-		
-		return stack;
-	}
-
-	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulated)
-	{
-		return null;
-	}
 	
-	private ItemStack insertIntoChargeSlot(ItemStack stack, boolean simulated)
+/*	private ItemStack insertIntoChargeSlot(ItemStack stack, boolean simulated)
 	{
 		//No item currently in slot
 		if (slots[chargeSlot] == null)
@@ -179,5 +144,5 @@ public class ContainerStirling extends ContainerBase implements ITeslaProducer
 		}
 		
 		return stack;
-	}
+	}*/
 }

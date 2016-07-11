@@ -1,6 +1,5 @@
 package com.skidsdev.teslaadditions.tile;
 
-import com.skidsdev.teslaadditions.container.ContainerFurnace;
 import com.skidsdev.teslaadditions.container.ContainerStirling;
 
 import net.minecraft.client.gui.Gui;
@@ -10,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityGeneratorStirling extends TileEntityMachine
 {
@@ -19,16 +19,18 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 	
 	public TileEntityGeneratorStirling()
 	{
-		super(new ContainerStirling());
+		super(new ContainerStirling(), new ItemStackHandler(2));
 	}
 	
 	@Override
 	public void update()
 	{
-		if (!isBurning && getInputStack() != null && TileEntityFurnace.isItemFuel(getInputStack()))
+		ItemStack inputStack = inventory.getStackInSlot(0);
+		
+		if (!isBurning && inputStack != null && TileEntityFurnace.isItemFuel(inputStack))
 		{
-			burnTime += TileEntityFurnace.getItemBurnTime(getInputStack());
-			getInputStack().stackSize--;
+			burnTime += TileEntityFurnace.getItemBurnTime(inputStack);
+			inputStack.stackSize -= 1;
 			
 			isBurning = true;
 			this.markDirty();
@@ -42,23 +44,11 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 			if (burnTime == 0) isBurning = false;
 			this.markDirty();
 		}
-		
-		if (getContainer().updateSlots()) this.markDirty();
 	}
 	
 	public ContainerStirling getContainer()
 	{
 		return (ContainerStirling)this.container;
-	}
-	
-	private ItemStack getInputStack()
-	{
-		return getContainer().getStackInSlot(getContainer().inputSlot);
-	}
-	
-	private ItemStack getChargeStack()
-	{
-		return getContainer().getStackInSlot(getContainer().chargeSlot);
 	}
 
 	@Override

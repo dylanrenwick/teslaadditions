@@ -1,13 +1,24 @@
-package com.skidsdev.teslaadditions.tile;
+package com.skidsdev.teslaadditions.utils;
+
+import com.skidsdev.teslaadditions.tile.TileEntityMachine;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.items.IItemHandler;
 
-public class TileEntityInventory extends TileEntity implements IInventory
+public class InventoryWrapper implements IInventory
 {
+	private IItemHandler itemHandler;
+	private TileEntityMachine tileEntity;
+	
+	public InventoryWrapper(IItemHandler itemHandler, TileEntityMachine tileEntity)
+	{
+		this.itemHandler = itemHandler;
+		this.tileEntity = tileEntity;
+	}
+	
 	@Override
 	public String getName()
 	{
@@ -29,31 +40,31 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	@Override
 	public int getSizeInventory()
 	{
-		return 0;
+		return itemHandler.getSlots();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int index)
 	{
-		return null;
+		return itemHandler.getStackInSlot(index);
 	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int count)
 	{
-		return null;
+		return itemHandler.extractItem(index, count, false);
 	}
 
 	@Override
 	public ItemStack removeStackFromSlot(int index)
 	{
-		return null;
+		return itemHandler.extractItem(index, itemHandler.getStackInSlot(index).stackSize, false);
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack)
 	{
-		
+		itemHandler.insertItem(index, stack, false);
 	}
 
 	@Override
@@ -63,27 +74,27 @@ public class TileEntityInventory extends TileEntity implements IInventory
 	}
 
 	@Override
+	public void markDirty()
+	{
+		tileEntity.markDirty();
+	}
+
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return false;
+		return tileEntity.isUseableByPlayer(player);
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player)
-	{
-		
-	}
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player)
-	{
-		
-	}
+	public void closeInventory(EntityPlayer player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack)
 	{
-		return false;
+		return true;
 	}
 
 	@Override

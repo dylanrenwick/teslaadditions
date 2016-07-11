@@ -2,9 +2,8 @@ package com.skidsdev.teslaadditions.tile;
 
 import com.skidsdev.teslaadditions.client.gui.GuiFurnace;
 import com.skidsdev.teslaadditions.container.ContainerFurnace;
-import com.skidsdev.teslaadditions.utils.Helper;
-
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerFurnace;
+
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -12,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class TileEntityElectroFurnace extends TileEntityMachine
 {
@@ -22,7 +23,7 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	
 	public TileEntityElectroFurnace()
 	{
-		super(new ContainerFurnace());
+		super(new ContainerFurnace(), new ItemStackHandler(3));
 	}
 	
 	@Override
@@ -47,8 +48,6 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 			isBurning = false;
 			this.markDirty();
 		}
-		
-		if (getContainer().updateSlots()) this.markDirty();
 	}
 	
 	public ContainerFurnace getContainer()
@@ -58,58 +57,32 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	
 	private void smeltItem()
 	{
-		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(getInputStack());
+		ItemStack inputStack = inventory.getStackInSlot(0);
+		ItemStack outputStack = inventory.getStackInSlot(2);
+		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputStack);
 		
-		getInputStack().stackSize -= 1;
+		inputStack.stackSize -= 1;
 		
-		if (getOutputStack() != null)
-		{
-			getOutputStack().stackSize += result.stackSize;
-		}
-		else
-		{
-			getContainer().insertItem(getContainer().outputSlot, result, false);
-		}
+		inventory.insertItem(2, result, false);
 	}
 	
 	private boolean canSmelt()
 	{
-		//No input item
-		if (getInputStack() == null)
+		ItemStack inputStack = inventory.getStackInSlot(0);
+		ItemStack outputStack = inventory.getStackInSlot(2);
+		ItemStack result;
+		
+		if (inputStack != null && (result = FurnaceRecipes.instance().getSmeltingResult(inputStack)) != null)
 		{
-			return false;
-		}
-		//Has input item
-		else
-		{
-			ItemStack inputStack = getInputStack();
-			//Input item is not smeltable
-			if (FurnaceRecipes.instance().getSmeltingResult(inputStack) == null) return false;
-			
-			ItemStack outputStack = getOutputStack();
 			if (outputStack == null) return true;
 			
-			if (Helper.areItemStacksStackable(inputStack, outputStack))
+			if (ItemStack.areItemsEqual(result, outputStack) && (outputStack.stackSize + result.stackSize) <= 64)
 			{
 				return true;
 			}
-			else return false;
 		}
-	}
-	
-	private ItemStack getInputStack()
-	{
-		return getContainer().getStackInSlot(getContainer().inputSlot);
-	}
-	
-	private ItemStack getChargeStack()
-	{
-		return getContainer().getStackInSlot(getContainer().chargeSlot);
-	}
-	
-	private ItemStack getOutputStack()
-	{
-		return getContainer().getStackInSlot(getContainer().outputSlot);
+		
+		return false;
 	}
 
 	@Override

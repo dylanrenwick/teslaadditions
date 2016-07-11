@@ -19,12 +19,12 @@ public abstract class GuiMachine extends GuiContainer
 	
 	protected TileEntity tileEntity;
 	
-	public GuiMachine(InventoryPlayer invPlayer, TileEntityMachine tileEntity, GuiContainerBase container)
+	public GuiMachine(InventoryPlayer invPlayer, TileEntityMachine tileEntity, GuiContainerBase container, int xSize, int ySize)
 	{
 		super(container);
 		
-		this.xSize = 176;
-		this.ySize = 207;
+		this.xSize = xSize;
+		this.ySize = ySize;
 		
 		this.tileEntity = tileEntity;
 	}

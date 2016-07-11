@@ -1,45 +1,23 @@
 package com.skidsdev.teslaadditions.container;
 
 import net.darkhax.tesla.api.ITeslaHolder;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public class ContainerBase implements IItemHandler, ITeslaHolder
+public class ContainerBase implements ITeslaHolder, INBTSerializable<NBTTagCompound>
 {
 	protected long storedPower;
+	protected long capacity;
 	
-	protected ItemStack[] slots;
-
-	@Override
-	public int getSlots()
+	public ContainerBase(long capacity)
 	{
-		return slots.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int slot)
-	{
-		if (slot < slots.length && slot >= 0) return slots[slot];
-		
-		return null;
-	}
-
-	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
-	{
-		return null;
-	}
-
-	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulate)
-	{
-		return null;
+		this.capacity = capacity;
 	}
 	
 	@Override
 	public long getCapacity()
 	{
-		return 0;
+		return capacity;
 	}
 
 	@Override
@@ -47,22 +25,26 @@ public class ContainerBase implements IItemHandler, ITeslaHolder
 	{
 		return storedPower;
 	}
-	
-	public boolean updateSlots()
-	{
-		boolean updated = false;
-		
-		if (slots == null) return false;
-		
-		for(ItemStack stack : slots)
-		{
-			if (stack != null && stack.stackSize <= 0)
-			{
-				stack = null;
-				updated = true;
-			}
-		}
-		
-		return updated;
-	}
+
+    @Override
+    public NBTTagCompound serializeNBT()
+    {
+        final NBTTagCompound dataTag = new NBTTagCompound();
+        dataTag.setLong("TeslaPower", this.storedPower);
+        dataTag.setLong("TeslaCapacity", this.capacity);
+        
+        return dataTag;
+    }
+    
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
+        this.storedPower = nbt.getLong("TeslaPower");
+        
+        if (nbt.hasKey("TeslaCapacity"))
+            this.capacity = nbt.getLong("TeslaCapacity");
+            
+        if (this.storedPower > this.capacity)
+            this.storedPower = this.capacity;
+    }
 }

@@ -9,9 +9,12 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiFurnace extends GuiMachine
 {
+	private static final int TEXTURE_WIDTH = 176;
+	private static final int TEXTURE_HEIGHT = 166;
+	
 	public GuiFurnace(InventoryPlayer invPlayer, TileEntityElectroFurnace tileEntity)
 	{
-		super(invPlayer, tileEntity, new GuiContainerFurnace(invPlayer, tileEntity));
+		super(invPlayer, tileEntity, new GuiContainerFurnace(invPlayer, tileEntity), TEXTURE_WIDTH, TEXTURE_HEIGHT);
 		
 		this.texture = new ResourceLocation(VersionInfo.ModId, "textures/gui/blockFurnace.png");
 	}

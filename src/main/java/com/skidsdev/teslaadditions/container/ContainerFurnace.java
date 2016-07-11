@@ -3,23 +3,15 @@ package com.skidsdev.teslaadditions.container;
 import com.skidsdev.teslaadditions.Config;
 
 import net.darkhax.tesla.api.ITeslaConsumer;
-import net.darkhax.tesla.api.ITeslaHolder;
-import net.darkhax.tesla.capability.TeslaCapabilities;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class ContainerFurnace extends ContainerBase implements ITeslaConsumer
 {
-	public static final int inputSlot = 0;
-	public static final int chargeSlot = 1;
-	public static final int outputSlot = 2;
-	
 	public ContainerFurnace()
 	{
-		slots = new ItemStack[3];
+		super(Config.furnaceBasePowerCap);
 	}
-
+	
 	@Override
 	public long givePower(long power, boolean simulated)
 	{
@@ -28,12 +20,6 @@ public class ContainerFurnace extends ContainerBase implements ITeslaConsumer
 		if (!simulated)	this.storedPower += removedPower;
 		
 		return removedPower;
-	}
-
-	@Override
-	public long getCapacity()
-	{
-		return Config.furnaceBasePowerCap;
 	}
 	
 	public boolean consumePower(boolean simulated)
@@ -48,47 +34,8 @@ public class ContainerFurnace extends ContainerBase implements ITeslaConsumer
 			return storedPower - Config.furnaceBasePowerUse >= Config.furnaceBasePowerUse;
 		}
 	}
-
-	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulated)
-	{
-		if (slot < slots.length && slot >= 0)
-		{
-			if (stack == null)
-			{
-				if (!simulated) slots[slot] = stack;
-			}
-			//Inserting into chargeSlot, and item can provide power
-			else if (slot == chargeSlot && stack.hasCapability(TeslaCapabilities.CAPABILITY_PRODUCER, null))
-			{
-				return insertIntoChargeSlot(stack, simulated);
-			}
-			//Inserting into inputSlot, and item can be smelted
-			else if (slot == inputSlot && FurnaceRecipes.instance().getSmeltingResult(stack) != null)
-			{
-				return insertIntoInputSlot(stack, simulated);
-			}
-		}
-		
-		return stack;
-	}
-
-	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulate)
-	{
-		if (slot < slots.length && slot >= 0)
-		{
-			ItemStack stack = slots[slot];
-			
-			if (!simulate) slots[slot] = null;
-			
-			return stack;
-		}
-		
-		return null;
-	}
 	
-	private ItemStack insertIntoChargeSlot(ItemStack stack, boolean simulated)
+/*	private ItemStack insertIntoChargeSlot(ItemStack stack, boolean simulated)
 	{
 		//No item currently in slot
 		if (slots[chargeSlot] == null)
@@ -196,5 +143,5 @@ public class ContainerFurnace extends ContainerBase implements ITeslaConsumer
 		}
 		
 		return stack;
-	}
+	}*/
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -37,6 +38,30 @@ public final class Helper
 		}
 		
 		return formattedTooltip;
+	}
+	
+	public static NBTTagCompound serializeItemHandler(NBTTagCompound compound, IItemHandler handler)
+	{
+		int itemSlots = handler.getSlots();
+		
+		for(int i = 0; i < itemSlots; i++)
+		{
+			ItemStack stack = handler.getStackInSlot(i);
+			if (stack != null) compound.setTag("ItemSlot" + i, stack.serializeNBT());
+		}
+		
+		return compound;
+	}
+	public static void deserializeItemHandler(NBTTagCompound compound, IItemHandler handler)
+	{
+		int itemSlots = handler.getSlots();
+		
+		for(int i = 0; i < itemSlots; i++)
+		{
+			ItemStack stack = null;
+			if (compound.hasKey("ItemSlot" + i)) stack = ItemStack.loadItemStackFromNBT((NBTTagCompound)compound.getTag("ItemSlot" + i));
+			handler.insertItem(i, stack, false);
+		}
 	}
 	
 	public static boolean areItemsStackable(ItemStack stackA, ItemStack stackB)

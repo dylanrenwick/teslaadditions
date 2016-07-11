@@ -2,29 +2,58 @@ package com.skidsdev.teslaadditions.tile;
 
 import com.skidsdev.teslaadditions.client.gui.IOpenableGUI;
 import com.skidsdev.teslaadditions.container.ContainerBase;
+import com.skidsdev.teslaadditions.utils.Helper;
 
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-public abstract class TileEntityMachine extends TileEntityInventory implements ITickable, IOpenableGUI
+public abstract class TileEntityMachine extends TileEntity implements ITickable, IOpenableGUI
 {
 	protected final ContainerBase container;
+	protected final IItemHandler inventory;
 	
-	public TileEntityMachine(ContainerBase container)
+	public TileEntityMachine(ContainerBase container, IItemHandler inventory)
 	{
 		this.container = container;
+		this.inventory = inventory;
 	}
-
+	
 	@Override
-	public void update()
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		{
+			return (T) inventory;
+		}
+		else if (capability == TeslaCapabilities.CAPABILITY_HOLDER)
+		{
+			return (T) container;
+		}
 		
+		return super.getCapability(capability, facing);
+	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ||
+				capability == TeslaCapabilities.CAPABILITY_HOLDER)
+		{
+			return true;
+		}
+		
+		return super.hasCapability(capability, facing);
 	}
 
 	@Override
@@ -33,35 +62,22 @@ public abstract class TileEntityMachine extends TileEntityInventory implements I
 	@Override
 	public abstract Container getServerGuiElement(int id, EntityPlayer player, World worldIn, BlockPos pos);
 	
-	//Inventory methods
 	@Override
-	public int getSizeInventory()
+	public void readFromNBT(NBTTagCompound compound)
 	{
-		return container.getSlots();
+		super.readFromNBT(compound);
+		container.deserializeNBT(compound);
+		if (compound.hasKey("Inventory")) Helper.deserializeItemHandler((NBTTagCompound)compound.getTag("Inventory"), inventory);
 	}
 	
 	@Override
-	public ItemStack getStackInSlot(int index)
+	public NBTTagCompound writeToNBT (NBTTagCompound compound)
 	{
-		return container.getStackInSlot(index);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count)
-	{
-		return container.extractItem(index, count, false);
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		return container.extractItem(index, container.getStackInSlot(index).stackSize, false);
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack)
-	{
-		container.insertItem(index, stack, false);
+		compound.setTag("TeslaContainer", this.container.serializeNBT());
+		
+		compound.setTag("Inventory", Helper.serializeItemHandler(compound, inventory));
+		
+		return super.writeToNBT(compound);
 	}
 	
 	public boolean isUseableByPlayer(EntityPlayer player)
@@ -74,18 +90,8 @@ public abstract class TileEntityMachine extends TileEntityInventory implements I
 		return player.getDistanceSq(pos.getX() + X_CENTRE_OFFSET, pos.getY() + Y_CENTRE_OFFSET, pos.getZ() + Z_CENTRE_OFFSET) < MAXIMUM_DISTANCE_SQ;
 	}
 	
-	public int getSlots()
+	public IItemHandler getInventory()
 	{
-		return container.getSlots();
-	}
-	
-	public ItemStack getSlot(int index)
-	{
-		return container.getStackInSlot(index);
-	}
-	
-	public ContainerBase getContainer()
-	{
-		return container;
+		return inventory;
 	}
 }

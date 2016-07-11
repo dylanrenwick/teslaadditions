@@ -55,10 +55,11 @@ public abstract class GuiContainerBase extends Container
 	}
 	
 	@Override
-	public void detectAndSendChanges() {
+	public void detectAndSendChanges()
+	{
 		super.detectAndSendChanges();
 
-		boolean allFieldsHaveChanged = false;
+		/*boolean allFieldsHaveChanged = false;
 		boolean fieldHasChanged [] = new boolean[tileEntity.getFieldCount()];
 		if (cachedFields == null) {
 			cachedFields = new int[tileEntity.getFieldCount()];
@@ -69,7 +70,7 @@ public abstract class GuiContainerBase extends Container
 				cachedFields[i] = tileEntity.getField(i);
 				fieldHasChanged[i] = true;
 			}
-		}
+		}*/
 	}
 	
 	@Override
