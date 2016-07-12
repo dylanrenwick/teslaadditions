@@ -39,7 +39,7 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 	{
 		ItemStack inputStack = inventory.getStackInSlot(0);
 		
-		if (!isBurning && inputStack != null && TileEntityFurnace.isItemFuel(inputStack))
+		if (!isBurning && inputStack != null && TileEntityFurnace.isItemFuel(inputStack) && container.getStoredPower() < container.getCapacity())
 		{
 			maxBurnTime = (TileEntityFurnace.getItemBurnTime(inputStack) / 2);
 			burnTime = maxBurnTime;
@@ -62,6 +62,15 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 		if (container.getStoredPower() > 0)
 		{
 			List<ITeslaConsumer> consumers = new ArrayList<ITeslaConsumer>();
+			
+			ItemStack chargeStack = inventory.getStackInSlot(1);
+			
+			if (chargeStack != null)
+			{
+				ITeslaConsumer cap = chargeStack.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, null);
+				
+				if (cap != null) consumers.add(cap);
+			}
 			
 			for (int x = -1; x < 2; x += 2)
 			{

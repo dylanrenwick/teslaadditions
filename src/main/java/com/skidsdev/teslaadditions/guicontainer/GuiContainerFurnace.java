@@ -5,6 +5,7 @@ import com.skidsdev.teslaadditions.client.gui.slot.SlotOutput;
 import com.skidsdev.teslaadditions.client.gui.slot.SlotSmelt;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
 
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -61,7 +62,17 @@ public class GuiContainerFurnace extends GuiContainerBase
 			}
 			else
 			{
-				return null;
+				if (sourceStack.hasCapability(TeslaCapabilities.CAPABILITY_PRODUCER, null))
+				{
+					if (!mergeItemStack(sourceStack, FURNACE_CHARGE_SLOT_INDEX, FURNACE_CHARGE_SLOT_INDEX + 1, false))
+					{
+						return null;
+					}
+				}
+				else
+				{
+					return null;
+				}
 			}
 		}
 		else

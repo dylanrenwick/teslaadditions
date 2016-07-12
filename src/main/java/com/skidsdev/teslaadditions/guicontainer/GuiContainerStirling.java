@@ -4,11 +4,13 @@ import com.skidsdev.teslaadditions.client.gui.slot.SlotCharge;
 import com.skidsdev.teslaadditions.client.gui.slot.SlotFuel;
 import com.skidsdev.teslaadditions.tile.TileEntityGeneratorStirling;
 
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 public class GuiContainerStirling extends GuiContainerBase
 {
@@ -44,7 +46,7 @@ public class GuiContainerStirling extends GuiContainerBase
 		
 		if (sourceSlotIndex < STIRLING_FIRST_SLOT_INDEX || sourceSlotIndex >= STIRLING_FIRST_SLOT_INDEX + STIRLING_SLOT_COUNT)
 		{
-			if (FurnaceRecipes.instance().getSmeltingResult(sourceStack) != null)
+			if (TileEntityFurnace.isItemFuel(sourceStack))
 			{
 				if (!mergeItemStack(sourceStack, STIRLING_INPUT_SLOT_INDEX, STIRLING_INPUT_SLOT_INDEX + 1, false))
 				{
@@ -53,7 +55,17 @@ public class GuiContainerStirling extends GuiContainerBase
 			}
 			else
 			{
-				return null;
+				if (sourceStack.hasCapability(TeslaCapabilities.CAPABILITY_CONSUMER, null))
+				{
+					if (!mergeItemStack(sourceStack, STIRLING_CHARGE_SLOT_INDEX, STIRLING_CHARGE_SLOT_INDEX + 1, false))
+					{
+						return null;
+					}
+				}
+				else
+				{
+					return null;
+				}
 			}
 		}
 		else

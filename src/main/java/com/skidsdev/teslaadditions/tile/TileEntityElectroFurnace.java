@@ -4,6 +4,7 @@ import com.skidsdev.teslaadditions.client.gui.GuiFurnace;
 import com.skidsdev.teslaadditions.container.ContainerFurnace;
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerFurnace;
 
+import net.darkhax.tesla.api.ITeslaProducer;
 import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class TileEntityElectroFurnace extends TileEntityMachine
 {
@@ -55,6 +54,23 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 			isBurning = false;
 			burnTime = 0;
 			this.markDirty();
+		}
+		
+		if (this.getStoredPower() < this.getPowerCap())
+		{
+			ItemStack chargeStack = inventory.getStackInSlot(1);
+			
+			if (chargeStack != null)
+			{
+				ITeslaProducer cap = chargeStack.getCapability(TeslaCapabilities.CAPABILITY_PRODUCER, null);
+				
+				if (cap != null)
+				{
+					long powerToTake = cap.takePower(20, true);
+					
+					cap.takePower(getContainer().givePower(powerToTake, false), false);
+				}
+			}
 		}
 		
 		if (this.getStoredPower() != lastTickPowerLevel) this.markDirty();
