@@ -21,6 +21,8 @@ public class Config
 	public static long stirlingBasePowerGen;
 	public static long stirlingBasePowerOut;
 	
+	public static long batteryBasePower;
+	
 	public static Configuration configuration;
 	
 	public Config(File configFile)
@@ -75,6 +77,10 @@ public class Config
 		p = configuration.get(CATEGORY_GENERAL, "stirlingBasePowerOut", 40);
 		p.setComment("The base power output rate of the StirlingGenerator");
 		stirlingBasePowerOut = p.getLong();
+
+		p = configuration.get(CATEGORY_GENERAL, "batteryBasePower", 40000);
+		p.setComment("The base power capacity of the ItemBattery");
+		batteryBasePower = p.getLong();
 	}
 	
 	private void doGeneralConfigs()

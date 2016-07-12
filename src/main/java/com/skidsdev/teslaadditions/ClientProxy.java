@@ -1,6 +1,7 @@
 package com.skidsdev.teslaadditions;
 
 import com.skidsdev.teslaadditions.client.render.blocks.BlockRenderRegister;
+import com.skidsdev.teslaadditions.client.render.items.ItemRenderRegister;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -14,6 +15,7 @@ public class ClientProxy extends CommonProxy
 		super.preInit(e);
 		
 		BlockRenderRegister.registerBlockRenderer();
+		ItemRenderRegister.registerItemRenderer();
 	}
 	
 	@Override
