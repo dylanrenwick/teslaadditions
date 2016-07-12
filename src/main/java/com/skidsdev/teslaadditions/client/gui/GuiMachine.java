@@ -6,11 +6,14 @@ import java.util.List;
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerBase;
 import com.skidsdev.teslaadditions.tile.TileEntityMachine;
 
+import net.darkhax.tesla.api.ITeslaHolder;
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,10 +21,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiMachine extends GuiContainer
 {
-	private final int POWER_BAR_TOP_LEFT_X = 7;
-	private final int POWER_BAR_TOP_LEFT_Y = 7;
-	private final int POWER_BAR_BOTTOM_WIDTH = 18;
-	private final int POWER_BAR_BOTTOM_HEIGHT = 55;
+	private final int POWER_BAR_TOP_LEFT_X = 9;
+	private final int POWER_BAR_TOP_LEFT_Y = 9;
+	private final int POWER_BAR_BOTTOM_WIDTH = 14;
+	private final int POWER_BAR_BOTTOM_HEIGHT = 50;
 	
 	protected ResourceLocation texture;
 	
@@ -43,6 +46,10 @@ public abstract class GuiMachine extends GuiContainer
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		
+		drawPowerbar(this, guiLeft + POWER_BAR_TOP_LEFT_X, guiTop + POWER_BAR_TOP_LEFT_Y, tileEntity, false);
+		
+		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 	}
 	
 	@Override
@@ -65,5 +72,32 @@ public abstract class GuiMachine extends GuiContainer
 	
 	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY){
 		return ((mouseX >= x && mouseX <= x+xSize) && (mouseY >= y && mouseY <= y+ySize));
+	}
+	
+	public static void drawPowerbar(GuiContainer container, int x, int y, TileEntity tile, EnumFacing side, boolean bg)
+	{
+		if(tile.hasCapability(TeslaCapabilities.CAPABILITY_HOLDER,side))
+		{
+			ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, side);
+			drawPowerbar(container, x, y, holder.getStoredPower(),holder.getCapacity(),bg);
+		}
+	}
+	
+	public static void drawPowerbar(GuiContainer container, int x, int y, TileEntity tile, boolean bg)
+	{
+		if(tile.hasCapability(TeslaCapabilities.CAPABILITY_HOLDER, null))
+		{
+			ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, null);
+			drawPowerbar(container, x, y, holder.getStoredPower(),holder.getCapacity(),bg);
+		}
+	}
+	
+	public static void drawPowerbar(GuiContainer container, int x, int y, long amount, long capacity, boolean bg)
+	{
+		ResourceLocation resourceLocation = new ResourceLocation("teslaadditions", "textures/gui/sheet.png");
+		container.mc.getTextureManager().bindTexture(resourceLocation);
+		if(bg) container.drawTexturedModalRect(x, y, 3, 1, 14, 50);
+		long j = (amount * 51) / capacity;
+		container.drawTexturedModalRect(x+1, (int) (y + 50 - j), 18, (int) (51-j), 14, (int)(j + 2));
 	}
 }

@@ -12,6 +12,13 @@ public class GuiStirling extends GuiMachine
 	private static final int TEXTURE_WIDTH = 176;
 	private static final int TEXTURE_HEIGHT = 166;
 	
+	final int FLAME_XPOS = 80;
+	final int FLAME_YPOS = 54;
+	final int FLAME_ICON_U = 176;
+	final int FLAME_ICON_V = 0;
+	final int FLAME_WIDTH = 14;
+	final int FLAME_HEIGHT = 14;
+	
 	public GuiStirling(InventoryPlayer invPlayer, TileEntityGeneratorStirling tileEntity)
 	{
 		super(invPlayer, tileEntity, new GuiContainerStirling(invPlayer, tileEntity), TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -24,7 +31,11 @@ public class GuiStirling extends GuiMachine
 	{
 		super.drawGuiContainerBackgroundLayer(partialTicks, x, y);
 		
+		double burnRemaining = ((TileEntityGeneratorStirling)tileEntity).getTimeRemaining();
 		
+		int yOffset = (int)Math.ceil((1.0 - burnRemaining) * (FLAME_HEIGHT));
+		
+		drawTexturedModalRect(guiLeft + FLAME_XPOS, guiTop + FLAME_YPOS + yOffset, FLAME_ICON_U, FLAME_ICON_V + yOffset, FLAME_WIDTH, FLAME_HEIGHT - yOffset);
 	}
 	
 	@Override

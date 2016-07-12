@@ -13,6 +13,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
@@ -24,6 +25,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityGeneratorStirling extends TileEntityMachine
 {
 	private int burnTime = 0;
+	private int maxBurnTime = 0;
 	
 	private boolean isBurning = false;
 	
@@ -39,10 +41,10 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 		
 		if (!isBurning && inputStack != null && TileEntityFurnace.isItemFuel(inputStack))
 		{
-			burnTime += TileEntityFurnace.getItemBurnTime(inputStack);
-			inputStack.stackSize -= 1;
+			maxBurnTime = (TileEntityFurnace.getItemBurnTime(inputStack) / 2);
+			burnTime = maxBurnTime;
 			
-			if (inputStack.stackSize <= 0) inventory.insertItem(0, null, false);
+			inventory.extractItem(0, 1, false);
 			
 			isBurning = true;
 			this.markDirty();
@@ -144,9 +146,31 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 		return super.hasCapability(capability, facing);
 	}
 	
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		super.readFromNBT(compound);
+		if (compound.hasKey("BurnTime")) burnTime = compound.getInteger("BurnTime");
+		if (compound.hasKey("MaxBurnTime")) maxBurnTime = compound.getInteger("MaxBurnTime");
+		isBurning = burnTime > 0;
+	}
+	
+	@Override
+	public NBTTagCompound writeToNBT (NBTTagCompound compound)
+	{
+		compound.setInteger("BurnTime", burnTime);
+		compound.setInteger("MaxBurnTime", maxBurnTime);
+		return super.writeToNBT(compound);
+	}
+	
 	public ContainerStirling getContainer()
 	{
 		return (ContainerStirling)this.container;
+	}
+	
+	public double getTimeRemaining()
+	{
+		return (double)burnTime / (double)maxBurnTime;
 	}
 
 	@Override

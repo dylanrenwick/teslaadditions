@@ -1,5 +1,7 @@
 package com.skidsdev.teslaadditions.guicontainer;
 
+import com.skidsdev.teslaadditions.client.gui.slot.SlotCharge;
+import com.skidsdev.teslaadditions.client.gui.slot.SlotFuel;
 import com.skidsdev.teslaadditions.tile.TileEntityGeneratorStirling;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,7 +9,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class GuiContainerStirling extends GuiContainerBase
 {
@@ -24,13 +25,13 @@ public class GuiContainerStirling extends GuiContainerBase
 		final int INPUT_SLOT_YPOS = 35;
 		
 		int slotNumber = 0;
-		addSlotToContainer(new SlotItemHandler(tileEntity.getInventory(), slotNumber, INPUT_SLOT_XPOS, INPUT_SLOT_YPOS));
+		addSlotToContainer(new SlotFuel(tileEntity.getInventory(), slotNumber, INPUT_SLOT_XPOS, INPUT_SLOT_YPOS));
 		
 		final int CHARGE_SLOT_XPOS = 8;
 		final int CHARGE_SLOT_YPOS = 64;
 		
 		slotNumber = 1;
-		addSlotToContainer(new SlotItemHandler(tileEntity.getInventory(), slotNumber, CHARGE_SLOT_XPOS, CHARGE_SLOT_YPOS));
+		addSlotToContainer(new SlotCharge(tileEntity.getInventory(), slotNumber, CHARGE_SLOT_XPOS, CHARGE_SLOT_YPOS));
 	}
 	
 	@Override

@@ -1,5 +1,8 @@
 package com.skidsdev.teslaadditions.guicontainer;
 
+import com.skidsdev.teslaadditions.client.gui.slot.SlotBattery;
+import com.skidsdev.teslaadditions.client.gui.slot.SlotOutput;
+import com.skidsdev.teslaadditions.client.gui.slot.SlotSmelt;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,7 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class GuiContainerFurnace extends GuiContainerBase
 {
@@ -25,19 +27,19 @@ public class GuiContainerFurnace extends GuiContainerBase
 		final int INPUT_SLOT_YPOS = 35;
 		
 		int slotNumber = 0;
-		addSlotToContainer(new SlotItemHandler(tileEntity.getInventory(), slotNumber, INPUT_SLOT_XPOS, INPUT_SLOT_YPOS));
+		addSlotToContainer(new SlotSmelt(tileEntity.getInventory(), slotNumber, INPUT_SLOT_XPOS, INPUT_SLOT_YPOS));
 		
 		final int CHARGE_SLOT_XPOS = 8;
 		final int CHARGE_SLOT_YPOS = 64;
 		
 		slotNumber = 1;
-		addSlotToContainer(new SlotItemHandler(tileEntity.getInventory(), slotNumber, CHARGE_SLOT_XPOS, CHARGE_SLOT_YPOS));
+		addSlotToContainer(new SlotBattery(tileEntity.getInventory(), slotNumber, CHARGE_SLOT_XPOS, CHARGE_SLOT_YPOS));
 		
 		final int OUTPUT_SLOT_XPOS = 116;
 		final int OUTPUT_SLOT_YPOS = 35;
 		
 		slotNumber = 2;
-		addSlotToContainer(new SlotItemHandler(tileEntity.getInventory(), slotNumber, OUTPUT_SLOT_XPOS, OUTPUT_SLOT_YPOS));
+		addSlotToContainer(new SlotOutput(tileEntity.getInventory(), slotNumber, OUTPUT_SLOT_XPOS, OUTPUT_SLOT_YPOS));
 	}
 	
 	@Override

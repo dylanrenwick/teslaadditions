@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -50,7 +51,7 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 			this.markDirty();
 		}
 		else if (isBurning)
-		{		
+		{
 			isBurning = false;
 			burnTime = 0;
 			this.markDirty();
@@ -92,6 +93,20 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 		return (ContainerFurnace)this.container;
 	}
 	
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		super.readFromNBT(compound);
+		if (compound.hasKey("BurnTime")) burnTime = compound.getInteger("BurnTime");
+	}
+	
+	@Override
+	public NBTTagCompound writeToNBT (NBTTagCompound compound)
+	{
+		compound.setInteger("BurnTime", burnTime);
+		return super.writeToNBT(compound);
+	}
+	
 	private void smeltItem()
 	{
 		if (this.worldObj.isRemote) return;
@@ -100,9 +115,7 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 		ItemStack outputStack = inventory.getStackInSlot(2);
 		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputStack).copy();
 		
-		inputStack.stackSize -= 1;
-		
-		if (inputStack.stackSize <= 0) inventory.insertItem(0, null, false);
+		inventory.extractItem(0, 1, false);
 		
 		inventory.insertItem(2, result, false);
 	}
