@@ -12,6 +12,7 @@ public class BlockRenderRegister
 	public static void registerBlockRenderer()
 	{
 		reg(BlockRegister.blockElectroFurnace);
+		reg(BlockRegister.blockGeneratorStirling);
 	}
 	
 	public static void reg(Block block)

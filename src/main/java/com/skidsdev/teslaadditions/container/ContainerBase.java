@@ -31,7 +31,6 @@ public class ContainerBase implements ITeslaHolder, INBTSerializable<NBTTagCompo
     {
         final NBTTagCompound dataTag = new NBTTagCompound();
         dataTag.setLong("TeslaPower", this.storedPower);
-        dataTag.setLong("TeslaCapacity", this.capacity);
         
         return dataTag;
     }
@@ -40,9 +39,6 @@ public class ContainerBase implements ITeslaHolder, INBTSerializable<NBTTagCompo
     public void deserializeNBT(NBTTagCompound nbt)
     {
         this.storedPower = nbt.getLong("TeslaPower");
-        
-        if (nbt.hasKey("TeslaCapacity"))
-            this.capacity = nbt.getLong("TeslaCapacity");
             
         if (this.storedPower > this.capacity)
             this.storedPower = this.capacity;

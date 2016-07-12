@@ -1,0 +1,9 @@
+{
+    "parent":"block/orientable",
+    "textures": {
+        "side":   "teslaadditions:blocks/blockMachine_side",
+        "top":    "teslaadditions:blocks/blockMachine_side",
+        "bottom": "teslaadditions:blocks/blockMachine_side",
+        "front":  "teslaadditions:blocks/blockMachine_stirling"
+    }
+}

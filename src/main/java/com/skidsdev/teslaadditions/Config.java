@@ -66,15 +66,15 @@ public class Config
 
 		p = configuration.get(CATEGORY_GENERAL, "stirlingBasePowerCap", 80000);
 		p.setComment("The base power storage capacity of the StirlingGenerator");
-		furnaceBasePowerUse = p.getLong();
+		stirlingBasePowerCap = p.getLong();
 
 		p = configuration.get(CATEGORY_GENERAL, "stirlingBasePowerGen", 20);
 		p.setComment("The base power generation rate of the StirlingGenerator");
-		furnaceBasePowerUse = p.getLong();
+		stirlingBasePowerGen = p.getLong();
 
 		p = configuration.get(CATEGORY_GENERAL, "stirlingBasePowerOut", 40);
 		p.setComment("The base power output rate of the StirlingGenerator");
-		furnaceBasePowerUse = p.getLong();
+		stirlingBasePowerOut = p.getLong();
 	}
 	
 	private void doGeneralConfigs()

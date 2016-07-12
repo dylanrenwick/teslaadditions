@@ -12,15 +12,21 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ContainerStirling extends ContainerBase implements ITeslaProducer
 {
+	private long maxOutput;
+	private long maxGen;
+	
 	public ContainerStirling()
 	{
 		super(Config.stirlingBasePowerCap);
+		
+		maxOutput = Config.stirlingBasePowerOut;
+		maxGen = Config.stirlingBasePowerGen;
 	}
 
 	@Override
 	public long takePower(long power, boolean simulated)
 	{
-		long takenPower = Math.min(storedPower, Math.min(Config.stirlingBasePowerOut, power));
+		long takenPower = Math.min(storedPower, Math.min(maxOutput, power));
 		
 		if (!simulated) storedPower -= takenPower;
 		
@@ -29,7 +35,7 @@ public class ContainerStirling extends ContainerBase implements ITeslaProducer
 	
 	public long generatePower(boolean simulated)
 	{
-		long generatedPower = Math.min((getCapacity() - storedPower), Config.stirlingBasePowerGen);
+		long generatedPower = Math.min((getCapacity() - storedPower), maxGen);
 		
 		if (!simulated) storedPower += generatedPower;
 		

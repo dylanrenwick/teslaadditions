@@ -4,13 +4,17 @@ import com.skidsdev.teslaadditions.client.gui.GuiFurnace;
 import com.skidsdev.teslaadditions.container.ContainerFurnace;
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerFurnace;
 
+import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -18,6 +22,8 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 {
 	private int smeltTime = 200;
 	private int burnTime = 0;
+	
+	private long lastTickPowerLevel = 0;
 	
 	private boolean isBurning = false;
 	
@@ -29,10 +35,10 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	@Override
 	public void update()
 	{
-		if (canSmelt() && getContainer().consumePower(false))
+		if (canSmelt() && getContainer().consumePower(true))
 		{
 			isBurning = true;
-			
+			getContainer().consumePower(false);
 			burnTime++;
 			
 			if (burnTime >= smeltTime)
@@ -46,8 +52,39 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 		else if (isBurning)
 		{		
 			isBurning = false;
+			burnTime = 0;
 			this.markDirty();
 		}
+		
+		if (this.getStoredPower() != lastTickPowerLevel) this.markDirty();
+		lastTickPowerLevel = this.getStoredPower();
+	}
+	
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if (capability == TeslaCapabilities.CAPABILITY_CONSUMER)
+		{
+			return (T) container;
+		}
+		
+		return super.getCapability(capability, facing);
+	}
+	
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if (capability == TeslaCapabilities.CAPABILITY_CONSUMER)
+		{
+			return true;
+		}
+		
+		return super.hasCapability(capability, facing);
+	}
+	
+	public double getProgress()
+	{
+		return (double)burnTime / (double)smeltTime;
 	}
 	
 	public ContainerFurnace getContainer()
@@ -57,11 +94,15 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	
 	private void smeltItem()
 	{
+		if (this.worldObj.isRemote) return;
+		
 		ItemStack inputStack = inventory.getStackInSlot(0);
 		ItemStack outputStack = inventory.getStackInSlot(2);
-		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputStack);
+		ItemStack result = FurnaceRecipes.instance().getSmeltingResult(inputStack).copy();
 		
 		inputStack.stackSize -= 1;
+		
+		if (inputStack.stackSize <= 0) inventory.insertItem(0, null, false);
 		
 		inventory.insertItem(2, result, false);
 	}

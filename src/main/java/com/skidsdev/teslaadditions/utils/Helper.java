@@ -40,30 +40,6 @@ public final class Helper
 		return formattedTooltip;
 	}
 	
-	public static NBTTagCompound serializeItemHandler(NBTTagCompound compound, IItemHandler handler)
-	{
-		int itemSlots = handler.getSlots();
-		
-		for(int i = 0; i < itemSlots; i++)
-		{
-			ItemStack stack = handler.getStackInSlot(i);
-			if (stack != null) compound.setTag("ItemSlot" + i, stack.serializeNBT());
-		}
-		
-		return compound;
-	}
-	public static void deserializeItemHandler(NBTTagCompound compound, IItemHandler handler)
-	{
-		int itemSlots = handler.getSlots();
-		
-		for(int i = 0; i < itemSlots; i++)
-		{
-			ItemStack stack = null;
-			if (compound.hasKey("ItemSlot" + i)) stack = ItemStack.loadItemStackFromNBT((NBTTagCompound)compound.getTag("ItemSlot" + i));
-			handler.insertItem(i, stack, false);
-		}
-	}
-	
 	public static boolean areItemsStackable(ItemStack stackA, ItemStack stackB)
 	{
 		return (ItemStack.areItemsEqual(stackA, stackB) && ItemStack.areItemStackTagsEqual(stackA, stackB));

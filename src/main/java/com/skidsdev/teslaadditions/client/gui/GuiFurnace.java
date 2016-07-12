@@ -12,6 +12,14 @@ public class GuiFurnace extends GuiMachine
 	private static final int TEXTURE_WIDTH = 176;
 	private static final int TEXTURE_HEIGHT = 166;
 	
+	private final int COOK_BAR_XPOS = 79;
+	private final int COOK_BAR_YPOS = 35;
+	private final int COOK_BAR_ICON_U = 176;
+	private final int COOK_BAR_ICON_V = 14;
+	private final int COOK_BAR_WIDTH = 24;
+	private final int COOK_BAR_HEIGHT = 17;
+
+	
 	public GuiFurnace(InventoryPlayer invPlayer, TileEntityElectroFurnace tileEntity)
 	{
 		super(invPlayer, tileEntity, new GuiContainerFurnace(invPlayer, tileEntity), TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -24,7 +32,9 @@ public class GuiFurnace extends GuiMachine
 	{
 		super.drawGuiContainerBackgroundLayer(partialTicks, x, y);
 		
+		double cookProgress = ((TileEntityElectroFurnace)tileEntity).getProgress();
 		
+		drawTexturedModalRect(guiLeft + COOK_BAR_XPOS, guiTop + COOK_BAR_YPOS, COOK_BAR_ICON_U, COOK_BAR_ICON_V, (int)(cookProgress * COOK_BAR_WIDTH), COOK_BAR_HEIGHT);
 	}
 	
 	@Override

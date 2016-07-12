@@ -31,7 +31,7 @@ public class ContainerFurnace extends ContainerBase implements ITeslaConsumer
 		}
 		else
 		{
-			return storedPower - Config.furnaceBasePowerUse >= Config.furnaceBasePowerUse;
+			return storedPower >= Config.furnaceBasePowerUse;
 		}
 	}
 	

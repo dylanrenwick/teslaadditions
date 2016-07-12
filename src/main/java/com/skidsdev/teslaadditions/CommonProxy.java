@@ -2,6 +2,7 @@ package com.skidsdev.teslaadditions;
 
 import com.skidsdev.teslaadditions.client.gui.GuiHandler;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
+import com.skidsdev.teslaadditions.tile.TileEntityGeneratorStirling;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -21,6 +22,7 @@ public class CommonProxy
 		this.modConfig.setupBlocks();
 		
 		GameRegistry.registerTileEntity(TileEntityElectroFurnace.class, "electrofurnace");
+		GameRegistry.registerTileEntity(TileEntityGeneratorStirling.class, "generatorstirling");
 		
 		guiHandler = GuiHandler.getInstance();
 	}

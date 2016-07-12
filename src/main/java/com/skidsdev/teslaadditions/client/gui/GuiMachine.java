@@ -1,8 +1,11 @@
 package com.skidsdev.teslaadditions.client.gui;
 
-import com.skidsdev.teslaadditions.tile.TileEntityMachine;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerBase;
+import com.skidsdev.teslaadditions.tile.TileEntityMachine;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,9 +18,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiMachine extends GuiContainer
 {
+	private final int POWER_BAR_TOP_LEFT_X = 7;
+	private final int POWER_BAR_TOP_LEFT_Y = 7;
+	private final int POWER_BAR_BOTTOM_WIDTH = 18;
+	private final int POWER_BAR_BOTTOM_HEIGHT = 55;
+	
 	protected ResourceLocation texture;
 	
-	protected TileEntity tileEntity;
+	protected TileEntityMachine tileEntity;
 	
 	public GuiMachine(InventoryPlayer invPlayer, TileEntityMachine tileEntity, GuiContainerBase container, int xSize, int ySize)
 	{
@@ -41,6 +49,18 @@ public abstract class GuiMachine extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+		
+		List<String> hoveringText = new ArrayList<String>();
+		
+		if (isInRect(guiLeft + POWER_BAR_TOP_LEFT_X, guiTop + POWER_BAR_TOP_LEFT_Y, POWER_BAR_BOTTOM_WIDTH, POWER_BAR_BOTTOM_HEIGHT, mouseX, mouseY))
+		{
+			hoveringText.add(tileEntity.getStoredPower() + "/" + tileEntity.getPowerCap() + " T");
+		}
+		
+		if (!hoveringText.isEmpty())
+		{
+			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRendererObj);
+		}
 	}
 	
 	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY){
