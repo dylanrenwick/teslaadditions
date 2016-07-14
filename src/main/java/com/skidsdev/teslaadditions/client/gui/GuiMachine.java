@@ -76,18 +76,20 @@ public abstract class GuiMachine extends GuiContainer
 	
 	public static void drawPowerbar(GuiContainer container, int x, int y, TileEntity tile, EnumFacing side, boolean bg)
 	{
-		if(tile.hasCapability(TeslaCapabilities.CAPABILITY_HOLDER,side))
+		ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, side);
+		
+		if (holder != null)
 		{
-			ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, side);
 			drawPowerbar(container, x, y, holder.getStoredPower(),holder.getCapacity(),bg);
 		}
 	}
 	
 	public static void drawPowerbar(GuiContainer container, int x, int y, TileEntity tile, boolean bg)
 	{
-		if(tile.hasCapability(TeslaCapabilities.CAPABILITY_HOLDER, null))
+		ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, null);
+		
+		if (holder != null)
 		{
-			ITeslaHolder holder = tile.getCapability(TeslaCapabilities.CAPABILITY_HOLDER, null);
 			drawPowerbar(container, x, y, holder.getStoredPower(),holder.getCapacity(),bg);
 		}
 	}
@@ -96,8 +98,8 @@ public abstract class GuiMachine extends GuiContainer
 	{
 		ResourceLocation resourceLocation = new ResourceLocation("teslaadditions", "textures/gui/sheet.png");
 		container.mc.getTextureManager().bindTexture(resourceLocation);
-		if(bg) container.drawTexturedModalRect(x, y, 3, 1, 14, 50);
+		if (bg) container.drawTexturedModalRect(x, y, 3, 1, 14, 50);
 		long j = (amount * 51) / capacity;
-		container.drawTexturedModalRect(x+1, (int) (y + 50 - j), 18, (int) (51-j), 14, (int)(j + 2));
+		container.drawTexturedModalRect(x + 1, (int)(y + 50 - j), 18, (int)(51 - j), 14, (int)(j + 2));
 	}
 }

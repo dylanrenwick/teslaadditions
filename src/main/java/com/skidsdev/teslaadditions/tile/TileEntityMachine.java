@@ -1,5 +1,8 @@
 package com.skidsdev.teslaadditions.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import com.skidsdev.teslaadditions.client.gui.IOpenableGUI;
@@ -27,6 +30,8 @@ public abstract class TileEntityMachine extends TileEntity implements ITickable,
 {
 	protected final ContainerBase container;
 	protected final ItemStackHandler inventory;
+	
+	private boolean isRunning = false;
 	
 	public TileEntityMachine(ContainerBase container, ItemStackHandler inventory)
 	{
@@ -120,6 +125,17 @@ public abstract class TileEntityMachine extends TileEntity implements ITickable,
 		return container.getCapacity();
 	}
 	
+	public boolean getIsRunning()
+	{
+		return isRunning;
+	}
+	
+	protected void setIsRunning(boolean isRunning)
+	{
+		this.isRunning = isRunning;
+		this.worldObj.markBlockRangeForRenderUpdate(pos, pos);
+	}
+	
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
 		if (this.worldObj.getTileEntity(this.pos) != this) return false;
@@ -133,5 +149,29 @@ public abstract class TileEntityMachine extends TileEntity implements ITickable,
 	public IItemHandler getInventory()
 	{
 		return inventory;
+	}
+	
+	public static <T> List<T> getNeighborCaps(Capability<T> capability, BlockPos pos, World worldIn)
+	{
+		List<T> caps = new ArrayList<T>();
+		
+		caps.add(getHasCap(capability, EnumFacing.NORTH.getOpposite(), worldIn.getTileEntity(pos.north())));
+		caps.add(getHasCap(capability, EnumFacing.SOUTH.getOpposite(), worldIn.getTileEntity(pos.south())));
+		caps.add(getHasCap(capability, EnumFacing.EAST.getOpposite(),  worldIn.getTileEntity(pos.east())));
+		caps.add(getHasCap(capability, EnumFacing.WEST.getOpposite(),  worldIn.getTileEntity(pos.west())));
+		caps.add(getHasCap(capability, EnumFacing.UP.getOpposite(),    worldIn.getTileEntity(pos.up())));
+		caps.add(getHasCap(capability, EnumFacing.DOWN.getOpposite(),  worldIn.getTileEntity(pos.down())));
+		
+		return caps;
+	}
+	
+	private static <T> T getHasCap(Capability<T> capability, EnumFacing facing, TileEntity tileEntity)
+	{
+		if (tileEntity != null && tileEntity.hasCapability(capability, facing))
+		{
+			return tileEntity.getCapability(capability, facing);
+		}
+		
+		return null;
 	}
 }

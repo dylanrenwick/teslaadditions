@@ -1,8 +1,10 @@
 package com.skidsdev.teslaadditions;
 
+import com.skidsdev.teslaadditions.capability.TeslaAdditionsCapabilities;
 import com.skidsdev.teslaadditions.client.gui.GuiHandler;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
 import com.skidsdev.teslaadditions.tile.TileEntityGeneratorStirling;
+import com.skidsdev.teslaadditions.tile.TileEntityMultiCable;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -16,6 +18,8 @@ public class CommonProxy
 	
 	public void preInit(FMLPreInitializationEvent e)
 	{
+		TeslaAdditionsCapabilities.registerCapabilities();
+		
 		this.modConfig = new Config(e.getSuggestedConfigurationFile());
 		
 		this.modConfig.setupItems();
@@ -23,6 +27,7 @@ public class CommonProxy
 		
 		GameRegistry.registerTileEntity(TileEntityElectroFurnace.class, "electrofurnace");
 		GameRegistry.registerTileEntity(TileEntityGeneratorStirling.class, "generatorstirling");
+		GameRegistry.registerTileEntity(TileEntityMultiCable.class, "powercable");
 		
 		guiHandler = GuiHandler.getInstance();
 	}

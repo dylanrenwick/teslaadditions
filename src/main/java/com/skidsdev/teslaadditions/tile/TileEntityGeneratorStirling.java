@@ -27,8 +27,6 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 	private int burnTime = 0;
 	private int maxBurnTime = 0;
 	
-	private boolean isBurning = false;
-	
 	public TileEntityGeneratorStirling()
 	{
 		super(new ContainerStirling(), new ItemStackHandler(2));
@@ -39,23 +37,23 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 	{
 		ItemStack inputStack = inventory.getStackInSlot(0);
 		
-		if (!isBurning && inputStack != null && TileEntityFurnace.isItemFuel(inputStack) && container.getStoredPower() < container.getCapacity())
+		if (!this.getIsRunning() && inputStack != null && TileEntityFurnace.isItemFuel(inputStack) && container.getStoredPower() < container.getCapacity())
 		{
 			maxBurnTime = (TileEntityFurnace.getItemBurnTime(inputStack) / 2);
 			burnTime = maxBurnTime;
 			
 			inventory.extractItem(0, 1, false);
 			
-			isBurning = true;
+			this.setIsRunning(true);
 			this.markDirty();
 		}
-		else if (isBurning)
+		else if (this.getIsRunning())
 		{
 			burnTime--;
 			
 			getContainer().generatePower(false);
 			
-			if (burnTime == 0) isBurning = false;
+			if (burnTime == 0) this.setIsRunning(false);
 			this.markDirty();
 		}
 		
@@ -72,51 +70,11 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 				if (cap != null) consumers.add(cap);
 			}
 			
-			for (int x = -1; x < 2; x += 2)
-			{
-				BlockPos searchPos = this.pos.add(x, 0, 0);
-				
-				TileEntity tileEntity = this.worldObj.getTileEntity(searchPos);
-				
-				if (tileEntity != null)
-				{
-					EnumFacing facing = x > 0 ? EnumFacing.WEST : EnumFacing.EAST;
-					ITeslaConsumer cap = tileEntity.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, facing);
-					
-					if (cap != null) consumers.add(cap);
-				}
-			}
+			List<ITeslaConsumer> neighbors = this.getNeighborCaps(TeslaCapabilities.CAPABILITY_CONSUMER, pos, this.worldObj);
 			
-			for (int y = -1; y < 2; y += 2)
+			for (ITeslaConsumer neighbor : neighbors)
 			{
-				BlockPos searchPos = this.pos.add(0, y, 0);
-				
-				TileEntity tileEntity = this.worldObj.getTileEntity(searchPos);
-				
-				if (tileEntity != null)
-				{
-					EnumFacing facing = y > 0 ? EnumFacing.DOWN : EnumFacing.UP;
-					ITeslaConsumer cap = tileEntity.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, facing);
-					
-					if (cap != null) consumers.add(cap);
-				}
-				
-			}
-			
-			for (int z = -1; z < 2; z += 2)
-			{
-
-				BlockPos searchPos = this.pos.add(0, 0, z);
-				
-				TileEntity tileEntity = this.worldObj.getTileEntity(searchPos);
-				
-				if (tileEntity != null)
-				{
-					EnumFacing facing = z > 0 ? EnumFacing.NORTH : EnumFacing.SOUTH;
-					ITeslaConsumer cap = tileEntity.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, facing);
-					
-					if (cap != null) consumers.add(cap);
-				}
+				if (neighbor != null) consumers.add(neighbor);
 			}
 			
 			if (!consumers.isEmpty())
@@ -161,7 +119,7 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 		super.readFromNBT(compound);
 		if (compound.hasKey("BurnTime")) burnTime = compound.getInteger("BurnTime");
 		if (compound.hasKey("MaxBurnTime")) maxBurnTime = compound.getInteger("MaxBurnTime");
-		isBurning = burnTime > 0;
+		this.setIsRunning(burnTime > 0);
 	}
 	
 	@Override
@@ -179,6 +137,7 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 	
 	public double getTimeRemaining()
 	{
+		if (maxBurnTime == 0) return 0;
 		return (double)burnTime / (double)maxBurnTime;
 	}
 

@@ -1,15 +1,13 @@
 package com.skidsdev.teslaadditions.container;
 
-import com.skidsdev.teslaadditions.Config;
-
 import net.darkhax.tesla.api.ITeslaConsumer;
 import net.darkhax.tesla.api.ITeslaProducer;
 
 public class ContainerBattery extends ContainerBase implements ITeslaConsumer, ITeslaProducer
 {
-	public ContainerBattery()
+	public ContainerBattery(long capacity)
 	{
-		super(Config.batteryBasePower);
+		super(capacity);
 	}
 
 	@Override

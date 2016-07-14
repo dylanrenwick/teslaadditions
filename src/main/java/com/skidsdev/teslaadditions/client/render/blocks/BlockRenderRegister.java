@@ -13,6 +13,7 @@ public class BlockRenderRegister
 	{
 		reg(BlockRegister.blockElectroFurnace);
 		reg(BlockRegister.blockGeneratorStirling);
+		reg(BlockRegister.blockPowerCable);
 	}
 	
 	public static void reg(Block block)

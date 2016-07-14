@@ -1,0 +1,110 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        
+    },
+    "variants": {
+        "center": {
+            "true": {
+                "model": "teslaadditions:blockPowerCable_center"
+            },
+            "false": {}
+        },
+        "north": {
+            "true": {
+                "submodel": {
+                    "northarm": { "model": "teslaadditions:blockPowerCable_arm" }
+                }
+            },
+            "false": {}
+        },
+        "south": {
+            "true": {
+                "submodel": {
+                    "southarm": { "model": "teslaadditions:blockPowerCable_arm", "y": 180 }
+                }            
+            },
+            "false": {}
+        },
+        "east": {
+            "true": {
+                "submodel": {
+                    "eastarm": { "model": "teslaadditions:blockPowerCable_arm", "y": 90 }
+                }            
+            },
+            "false": {}
+        },
+        "west": {
+            "true": {
+                "submodel": {
+                    "westarm": { "model": "teslaadditions:blockPowerCable_arm", "y": 270 }
+                }            
+            },
+            "false": {}
+        },
+        "up": {
+            "true": {
+                "submodel": {
+                    "uparm": { "model": "teslaadditions:blockPowerCable_arm", "x": 270 }
+                }            
+            },
+            "false": {}
+        },
+        "down": {
+            "true": {
+                "submodel": {
+                    "downarm": { "model": "teslaadditions:blockPowerCable_arm", "x": 90 }
+                }            
+            },
+            "false": {}
+        },
+        "interface_north": {
+            "true": {
+                "submodel": {
+                    "northinterface": { "model": "teslaadditions:blockPowerCable_interface" }
+                }    
+            },
+            "false": {}
+        },
+        "interface_south": {
+            "true": {
+                "submodel": {
+                    "southinterface": { "model": "teslaadditions:blockPowerCable_interface", "y": 180 }
+                }  
+            },
+            "false": {}
+        },
+        "interface_east": {
+            "true": {
+                "submodel": {
+                    "eastinterface": { "model": "teslaadditions:blockPowerCable_interface", "y": 90 }
+                }  
+            },
+            "false": {}
+        },
+        "interface_west": {
+            "true": {
+                "submodel": {
+                    "westinterface": { "model": "teslaadditions:blockPowerCable_interface", "y": 270 }
+                }  
+            },
+            "false": {}
+        },
+        "interface_up": {
+            "true": {
+                "submodel": {
+                    "upinterface": { "model": "teslaadditions:blockPowerCable_interface", "x": 270 }
+                }  
+            },
+            "false": {}
+        },
+        "interface_down": {
+            "true": {
+                "submodel": {
+                    "downinterface": { "model": "teslaadditions:blockPowerCable_interface", "x": 90 }
+                }  
+            },
+            "false": {}
+        }
+    }
+}

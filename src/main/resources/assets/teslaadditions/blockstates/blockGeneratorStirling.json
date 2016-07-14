@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": { "model": "teslaadditions:blockGeneratorStirling" },
-        "facing=east":  { "model": "teslaadditions:blockGeneratorStirling", "y": 90 },
-        "facing=south": { "model": "teslaadditions:blockGeneratorStirling", "y": 180 },
-        "facing=west":  { "model": "teslaadditions:blockGeneratorStirling", "y": 270 }
+        "facing=north,running=false": { "model": "teslaadditions:blockGeneratorStirling" },
+        "facing=east,running=false":  { "model": "teslaadditions:blockGeneratorStirling", "y": 90 },
+        "facing=south,running=false": { "model": "teslaadditions:blockGeneratorStirling", "y": 180 },
+        "facing=west,running=false":  { "model": "teslaadditions:blockGeneratorStirling", "y": 270 },
+        "facing=north,running=true":  { "model": "teslaadditions:blockGeneratorStirling_lit" },
+        "facing=east,running=true":   { "model": "teslaadditions:blockGeneratorStirling_lit", "y": 90 },
+        "facing=south,running=true":  { "model": "teslaadditions:blockGeneratorStirling_lit", "y": 180 },
+        "facing=west,running=true":   { "model": "teslaadditions:blockGeneratorStirling_lit", "y": 270 }
     }
 }

@@ -19,7 +19,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class BlockDirectional extends BlockBase
 {	
-	public BlockDirectional(String regName, Material material, float hardness, float resistance) {
+	public BlockDirectional(String regName, Material material, float hardness, float resistance)
+	{
 		super(regName, material, hardness, resistance);
 	}
 

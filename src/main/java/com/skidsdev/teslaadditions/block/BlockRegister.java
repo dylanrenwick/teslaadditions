@@ -9,6 +9,7 @@ public class BlockRegister
 {
 	public static Block blockElectroFurnace;
 	public static Block blockGeneratorStirling;
+	public static Block blockPowerCable;
 	
 	public static void createBlocks()
 	{
@@ -17,5 +18,8 @@ public class BlockRegister
 		
 		GameRegistry.register(blockGeneratorStirling = new BlockGeneratorStirling());
 		GameRegistry.register(new ItemBlock(blockGeneratorStirling).setRegistryName(blockGeneratorStirling.getRegistryName().toString()));
+		
+		GameRegistry.register(blockPowerCable = new BlockMultiCable());
+		GameRegistry.register(new ItemBlock(blockPowerCable).setRegistryName(blockPowerCable.getRegistryName().toString()));
 	}
 }

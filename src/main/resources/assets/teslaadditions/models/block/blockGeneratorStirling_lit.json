@@ -4,6 +4,6 @@
         "side":   "teslaadditions:blocks/blockMachine_stirling_side",
         "top":    "teslaadditions:blocks/blockMachine_stirling_top",
         "bottom": "teslaadditions:blocks/blockMachine_bottom",
-        "front":  "teslaadditions:blocks/blockMachine_stirling"
+        "front":  "teslaadditions:blocks/blockMachine_stirling_lit"
     }
 }

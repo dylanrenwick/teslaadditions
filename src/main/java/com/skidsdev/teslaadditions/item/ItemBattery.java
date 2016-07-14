@@ -2,6 +2,7 @@ package com.skidsdev.teslaadditions.item;
 
 import java.util.List;
 
+import com.skidsdev.teslaadditions.Config;
 import com.skidsdev.teslaadditions.container.ContainerBattery;
 import com.skidsdev.teslaadditions.container.ContainerBatteryProvider;
 
@@ -32,6 +33,6 @@ public class ItemBattery extends ItemBase
     @Override
     public ICapabilityProvider initCapabilities (ItemStack stack, NBTTagCompound nbt)
     {
-        return new ContainerBatteryProvider(new ContainerBattery());
+        return new ContainerBatteryProvider(new ContainerBattery(Config.batteryBasePower));
     }
 }

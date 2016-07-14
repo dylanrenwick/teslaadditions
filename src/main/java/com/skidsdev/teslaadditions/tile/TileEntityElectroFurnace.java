@@ -25,8 +25,6 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	
 	private long lastTickPowerLevel = 0;
 	
-	private boolean isBurning = false;
-	
 	public TileEntityElectroFurnace()
 	{
 		super(new ContainerFurnace(), new ItemStackHandler(3));
@@ -37,7 +35,7 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 	{
 		if (canSmelt() && getContainer().consumePower(true))
 		{
-			isBurning = true;
+			this.setIsRunning(true);
 			getContainer().consumePower(false);
 			burnTime++;
 			
@@ -49,9 +47,9 @@ public class TileEntityElectroFurnace extends TileEntityMachine
 			
 			this.markDirty();
 		}
-		else if (isBurning)
+		else if (this.getIsRunning())
 		{
-			isBurning = false;
+			this.setIsRunning(false);
 			burnTime = 0;
 			this.markDirty();
 		}

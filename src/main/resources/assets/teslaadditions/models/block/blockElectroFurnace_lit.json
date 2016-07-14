@@ -4,6 +4,6 @@
         "side":   "teslaadditions:blocks/blockMachine_furnace_side",
         "top":    "teslaadditions:blocks/blockMachine_furnace_top",
         "bottom": "teslaadditions:blocks/blockMachine_bottom",
-        "front":  "teslaadditions:blocks/blockMachine_furnace"
+        "front":  "teslaadditions:blocks/blockMachine_furnace_lit"
     }
 }

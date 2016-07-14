@@ -7,10 +7,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 
 public abstract class GuiContainerBase extends Container
 {
-	private TileEntityMachine tileEntity;
+	private TileEntity tileEntity;
 	
 	private int[] cachedFields;
 	
@@ -21,7 +22,7 @@ public abstract class GuiContainerBase extends Container
 	protected final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
 	protected final int VANILLA_FIRST_SLOT_INDEX = 0;
 	
-	public GuiContainerBase(InventoryPlayer invPlayer, TileEntityMachine tileEntity)
+	public GuiContainerBase(InventoryPlayer invPlayer, TileEntity tileEntity)
 	{
 		this.tileEntity = tileEntity;
 		
@@ -51,7 +52,7 @@ public abstract class GuiContainerBase extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer player)
 	{
-		return tileEntity.isUseableByPlayer(player);
+		return true;
 	}
 	
 	@Override
