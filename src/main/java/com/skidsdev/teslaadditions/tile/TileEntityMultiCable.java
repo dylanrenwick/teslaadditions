@@ -4,6 +4,7 @@ import com.skidsdev.teslaadditions.capability.MultiCable;
 import com.skidsdev.teslaadditions.capability.TeslaAdditionsCapabilities;
 import com.skidsdev.teslaadditions.client.gui.GuiCable;
 import com.skidsdev.teslaadditions.client.gui.IOpenableGUI;
+import com.skidsdev.teslaadditions.container.CableInterface;
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerCable;
 
 import net.minecraft.block.state.IBlockState;
@@ -89,6 +90,11 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 	@Override
 	public void update()
 	{
+		if (container.hasUpdated)
+		{
+			this.worldObj.markBlockRangeForRenderUpdate(pos, pos);
+			container.hasUpdated = false;
+		}
 		container.update();
 	}
 
@@ -97,7 +103,18 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 	{
 		if (container.hasInterfaces())
 		{
-			return new GuiCable(player.inventory, this);
+			if (id == 0)
+				return new GuiCable(player.inventory, this);
+			else
+			{
+				EnumFacing facing = EnumFacing.values()[id - 1];
+				
+				if (container.hasCableInterface(facing))
+				{
+					CableInterface cabInterface = (CableInterface)container.getCableInterface(facing);
+					return cabInterface.getClientGuiElement(id, player, worldIn, pos);
+				}
+			}
 		}
 		return null;
 	}
@@ -107,7 +124,18 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 	{
 		if (container.hasInterfaces())
 		{
-			return new GuiContainerCable(player.inventory, this);
+			if (id == 0)
+				return new GuiContainerCable(player.inventory, this);
+			else
+			{
+				EnumFacing facing = EnumFacing.values()[id - 1];
+				
+				if (container.hasCableInterface(facing))
+				{
+					CableInterface cabInterface = (CableInterface)container.getCableInterface(facing);
+					return cabInterface.getServerGuiElement(id, player, worldIn, pos);
+				}
+			}
 		}		
 		return null;
 	}

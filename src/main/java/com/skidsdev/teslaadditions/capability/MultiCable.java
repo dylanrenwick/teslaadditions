@@ -18,6 +18,8 @@ public class MultiCable implements IMultiCable, INBTSerializable<NBTTagCompound>
 	@Nullable
 	private ContainerCableInterface interfaces;
 	
+	public boolean hasUpdated;
+	
 	public MultiCable(NBTTagCompound tag)
 	{
 		this();
@@ -26,7 +28,7 @@ public class MultiCable implements IMultiCable, INBTSerializable<NBTTagCompound>
 	}
 	public MultiCable()
 	{
-		
+		hasUpdated = false;
 	}
 	
 	@Override
@@ -70,6 +72,7 @@ public class MultiCable implements IMultiCable, INBTSerializable<NBTTagCompound>
 		{
 			interfaces = new ContainerCableInterface(facing);
 		}
+		hasUpdated = true;
 	}
 	
 	@Override
