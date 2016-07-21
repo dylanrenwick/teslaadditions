@@ -6,8 +6,6 @@ import com.skidsdev.teslaadditions.TeslaAdditions;
 import com.skidsdev.teslaadditions.capability.TeslaAdditionsCapabilities;
 import com.skidsdev.teslaadditions.tile.TileEntityMultiCable;
 
-import net.darkhax.tesla.api.ITeslaHolder;
-import net.darkhax.tesla.capability.TeslaCapabilities;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,7 +17,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 

@@ -1,21 +1,16 @@
 package com.skidsdev.teslaadditions.container;
 
 import com.skidsdev.teslaadditions.capability.ICableInterface;
-import com.skidsdev.teslaadditions.client.gui.IOpenableGUI;
+import com.skidsdev.teslaadditions.utils.ExpandingItemHandler;
 
-import net.minecraft.client.gui.Gui;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandler;
 
-public class CableInterface implements IOpenableGUI, INBTSerializable<NBTTagCompound>, ICableInterface
+public class CableInterface implements INBTSerializable<NBTTagCompound>, ICableInterface
 {
-	protected ItemStackHandler inventory;
+	protected ExpandingItemHandler inventory;
 	
 	public CableInterface(NBTTagCompound tag)
 	{
@@ -25,19 +20,12 @@ public class CableInterface implements IOpenableGUI, INBTSerializable<NBTTagComp
 	}
 	public CableInterface()
 	{
-		inventory = new ItemStackHandler();
+		inventory = new ExpandingItemHandler();
 	}
-
-	@Override
-	public Gui getClientGuiElement(int id, EntityPlayer player, World worldIn, BlockPos pos)
+	
+	public IItemHandler getInventory()
 	{
-		return null;
-	}
-
-	@Override
-	public Container getServerGuiElement(int id, EntityPlayer player, World worldIn, BlockPos pos)
-	{
-		return null;
+		return inventory;
 	}
 	
 	@Override

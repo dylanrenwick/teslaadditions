@@ -18,7 +18,6 @@ public class GuiFurnace extends GuiMachine
 	private final int COOK_BAR_ICON_V = 14;
 	private final int COOK_BAR_WIDTH = 24;
 	private final int COOK_BAR_HEIGHT = 17;
-
 	
 	public GuiFurnace(InventoryPlayer invPlayer, TileEntityElectroFurnace tileEntity)
 	{

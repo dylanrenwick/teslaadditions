@@ -10,7 +10,10 @@ public class ItemRenderRegister
 {
 	public static void registerItemRenderer()
 	{
-		reg(ItemRegister.itemBattery);
+		for(Item item : ItemRegister.registeredItems)
+		{
+			reg(item);
+		}
 	}
 	
 	private static void reg(Item item) { reg(item, 0); }

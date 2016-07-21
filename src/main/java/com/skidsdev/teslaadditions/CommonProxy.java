@@ -2,9 +2,9 @@ package com.skidsdev.teslaadditions;
 
 import com.skidsdev.teslaadditions.capability.TeslaAdditionsCapabilities;
 import com.skidsdev.teslaadditions.client.gui.GuiHandler;
+import com.skidsdev.teslaadditions.tile.TileEntityCapacitor;
 import com.skidsdev.teslaadditions.tile.TileEntityElectroFurnace;
 import com.skidsdev.teslaadditions.tile.TileEntityGeneratorStirling;
-import com.skidsdev.teslaadditions.tile.TileEntityMultiCable;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -27,7 +27,8 @@ public class CommonProxy
 		
 		GameRegistry.registerTileEntity(TileEntityElectroFurnace.class, "electrofurnace");
 		GameRegistry.registerTileEntity(TileEntityGeneratorStirling.class, "generatorstirling");
-		GameRegistry.registerTileEntity(TileEntityMultiCable.class, "powercable");
+		GameRegistry.registerTileEntity(TileEntityCapacitor.class, "capacitor");
+		//GameRegistry.registerTileEntity(TileEntityMultiCable.class, "multicable");
 		
 		guiHandler = GuiHandler.getInstance();
 	}

@@ -1,7 +1,9 @@
 package com.skidsdev.teslaadditions.block;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -9,17 +11,30 @@ public class BlockRegister
 {
 	public static Block blockElectroFurnace;
 	public static Block blockGeneratorStirling;
-	public static Block blockPowerCable;
+	public static Block blockCapacitor;
+	//public static Block blockMultiCable;
+	
+	public static List<Block> registeredBlocks;
 	
 	public static void createBlocks()
 	{
-		GameRegistry.register(blockElectroFurnace = new BlockElectroFurnace());
-		GameRegistry.register(new ItemBlock(blockElectroFurnace).setRegistryName(blockElectroFurnace.getRegistryName().toString()));
+		registeredBlocks = new ArrayList<Block>();
 		
-		GameRegistry.register(blockGeneratorStirling = new BlockGeneratorStirling());
-		GameRegistry.register(new ItemBlock(blockGeneratorStirling).setRegistryName(blockGeneratorStirling.getRegistryName().toString()));
+		blockElectroFurnace    = registerBlock(new BlockElectroFurnace());
+		blockGeneratorStirling = registerBlock(new BlockGeneratorStirling());
+		blockCapacitor         = registerBlock(new BlockCapacitor());
 		
-		GameRegistry.register(blockPowerCable = new BlockMultiCable());
-		GameRegistry.register(new ItemBlock(blockPowerCable).setRegistryName(blockPowerCable.getRegistryName().toString()));
+		//GameRegistry.register(blockMultiCable = new BlockMultiCable());
+		//GameRegistry.register(new ItemBlock(blockMultiCable).setRegistryName(blockMultiCable.getRegistryName().toString()));
+	}
+	
+	private static Block registerBlock(Block block)
+	{
+		GameRegistry.register(block);
+		GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName().toString()));
+		
+		registeredBlocks.add(block);
+		
+		return block;
 	}
 }

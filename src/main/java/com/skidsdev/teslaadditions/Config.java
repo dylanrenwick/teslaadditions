@@ -23,6 +23,8 @@ public class Config
 	
 	public static long batteryBasePower;
 	
+	public static long capacitorBasePowerCap;
+	
 	public static Configuration configuration;
 	
 	public Config(File configFile)
@@ -81,6 +83,10 @@ public class Config
 		p = configuration.get(CATEGORY_GENERAL, "batteryBasePower", 40000);
 		p.setComment("The base power capacity of the ItemBattery");
 		batteryBasePower = p.getLong();
+
+		p = configuration.get(CATEGORY_GENERAL, "capacitorBasePowerCap", 400000);
+		p.setComment("The base power capacity of BlockCapacitor");
+		capacitorBasePowerCap = p.getLong();
 	}
 	
 	private void doGeneralConfigs()

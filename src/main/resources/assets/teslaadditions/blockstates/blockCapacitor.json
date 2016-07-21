@@ -16,7 +16,7 @@
             "3": { "textures": { "front": "teslaadditions:blocks/blockCapacitor_front_3" } },
             "4": { "textures": { "front": "teslaadditions:blocks/blockCapacitor_front_4" } },
             "5": { "textures": { "front": "teslaadditions:blocks/blockCapacitor_front_5" } },
-            "6": { "textures": { "front": "teslaadditions:blocks/blockCapacitor_front_6" } },
+            "6": { "textures": { "front": "teslaadditions:blocks/blockCapacitor_front_6" } }
         },
         "facing": {
             "north": {},

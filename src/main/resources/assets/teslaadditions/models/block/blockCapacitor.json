@@ -1,0 +1,9 @@
+{
+    "parent":"block/orientable",
+    "textures": {
+        "side":   "teslaadditions:blocks/blockCapacitor_side",
+        "top":    "teslaadditions:blocks/blockCapacitor_side",
+        "bottom": "teslaadditions:blocks/blockCapacitor_side",
+        "front":  "teslaadditions:blocks/blockCapacitor_front_0"
+    }
+}

@@ -11,12 +11,13 @@ public class BlockRenderRegister
 {
 	public static void registerBlockRenderer()
 	{
-		reg(BlockRegister.blockElectroFurnace);
-		reg(BlockRegister.blockGeneratorStirling);
-		reg(BlockRegister.blockPowerCable);
+		for(Block block : BlockRegister.registeredBlocks)
+		{
+			reg(block);
+		}
 	}
 	
-	public static void reg(Block block)
+	private static void reg(Block block)
 	{
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName().toString(), "inventory"));
 	}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north":  { "model": "teslaadditions:blockTeslaCoil" },
+        "facing=east":   { "model": "teslaadditions:blockTeslaCoil", "y": 90 },
+        "facing=south":  { "model": "teslaadditions:blockTeslaCoil", "y": 180 },
+        "facing=west":   { "model": "teslaadditions:blockTeslaCoil", "y": 270 },
+        "facing=up":     { "model": "teslaadditions:blockTeslaCoil", "x": 270 },
+        "facing=down":   { "model": "teslaadditions:blockTeslaCoil", "x": 90 }
+    }
+}

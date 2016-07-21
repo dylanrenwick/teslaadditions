@@ -1,11 +1,16 @@
 package com.skidsdev.teslaadditions.tile;
 
+import java.util.Dictionary;
+
+import com.skidsdev.teslaadditions.capability.IMultiCable;
 import com.skidsdev.teslaadditions.capability.MultiCable;
 import com.skidsdev.teslaadditions.capability.TeslaAdditionsCapabilities;
 import com.skidsdev.teslaadditions.client.gui.GuiCable;
+import com.skidsdev.teslaadditions.client.gui.GuiInterface;
 import com.skidsdev.teslaadditions.client.gui.IOpenableGUI;
 import com.skidsdev.teslaadditions.container.CableInterface;
 import com.skidsdev.teslaadditions.guicontainer.GuiContainerCable;
+import com.skidsdev.teslaadditions.guicontainer.GuiContainerInterface;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.Gui;
@@ -28,6 +33,33 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 		super();
 		
 		container = new MultiCable();
+		
+		Dictionary<EnumFacing, TileEntity> neighborMultiCable = container.getNeighborsHaveCapability(TeslaAdditionsCapabilities.MULTI_CABLE, pos, this.worldObj);
+		
+		boolean isInNetwork = false;
+		
+		if (!neighborMultiCable.isEmpty())
+		{
+			for (EnumFacing facing : EnumFacing.values())
+			{
+				TileEntity tileEntity = neighborMultiCable.get(facing);
+				
+				if (tileEntity != null)
+				{
+					IMultiCable multiCable = tileEntity.getCapability(TeslaAdditionsCapabilities.MULTI_CABLE, facing.getOpposite());
+					
+					if (!isInNetwork)
+					{
+						multiCable.joinNetwork(this);
+						isInNetwork = true;
+					}
+					else
+					{
+						multiCable.mergeNetwork(container.getNetwork());
+					}
+				}
+			}
+		}
 	}
 	
 	public boolean hasInterface(EnumFacing facing)
@@ -111,8 +143,7 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 				
 				if (container.hasCableInterface(facing))
 				{
-					CableInterface cabInterface = (CableInterface)container.getCableInterface(facing);
-					return cabInterface.getClientGuiElement(id, player, worldIn, pos);
+					return getInterfaceClientGui(facing, player, worldIn, pos);
 				}
 			}
 		}
@@ -132,11 +163,24 @@ public class TileEntityMultiCable extends TileEntity implements ITickable, IOpen
 				
 				if (container.hasCableInterface(facing))
 				{
-					CableInterface cabInterface = (CableInterface)container.getCableInterface(facing);
-					return cabInterface.getServerGuiElement(id, player, worldIn, pos);
+					return getInterfaceServerGui(facing, player, worldIn, pos);
 				}
 			}
 		}		
 		return null;
+	}
+	
+	private Gui getInterfaceClientGui(EnumFacing facing, EntityPlayer player, World worldIn, BlockPos pos)
+	{
+		CableInterface cabInt = (CableInterface)container.getCableInterface(facing);
+		
+		return new GuiInterface(player.inventory, this, cabInt);
+	}
+	
+	private Container getInterfaceServerGui(EnumFacing facing, EntityPlayer player, World worldIn, BlockPos pos)
+	{
+		CableInterface cabInt = (CableInterface)container.getCableInterface(facing);
+		
+		return new GuiContainerInterface(player.inventory, this, cabInt);
 	}
 }

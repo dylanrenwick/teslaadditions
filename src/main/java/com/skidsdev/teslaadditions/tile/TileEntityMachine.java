@@ -22,6 +22,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -168,7 +169,7 @@ public abstract class TileEntityMachine extends TileEntity implements ITickable,
 	private static <T> T getHasCap(Capability<T> capability, EnumFacing facing, TileEntity tileEntity)
 	{
 		if (tileEntity != null && tileEntity.hasCapability(capability, facing))
-		{
+		{			
 			return tileEntity.getCapability(capability, facing);
 		}
 		

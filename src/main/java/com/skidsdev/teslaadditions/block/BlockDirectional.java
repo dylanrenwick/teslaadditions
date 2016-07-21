@@ -47,36 +47,4 @@ public class BlockDirectional extends BlockBase
 	{
 		return getStateFromMeta(meta).withProperty(BlockHorizontal.FACING, placer.getHorizontalFacing().getOpposite());
 	}
-	
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-	{
-		TileEntity tile = worldIn.getTileEntity(pos);
-		
-		if (tile != null)
-		{
-			IItemHandler inv = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-			Helper.dropInventory(inv, worldIn, pos);
-		
-			worldIn.notifyNeighborsOfStateChange(pos, state.getBlock());
-			super.breakBlock(worldIn, pos, state);
-		}
-	}
-	
-	@Override
-	public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer player)
-	{
-		if(worldIn.isRemote)
-		{
-			return;
-		}
-		
-		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-	}
-	
-	protected void setFacingMeta(World worldIn, BlockPos pos, EntityPlayer player)
-	{
-		worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(BlockHorizontal.FACING, player.getHorizontalFacing().getOpposite()));
-	}
 }

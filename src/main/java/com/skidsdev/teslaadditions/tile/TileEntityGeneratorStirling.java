@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityGeneratorStirling extends TileEntityMachine
+public class TileEntityGeneratorStirling extends TileEntityOutput
 {
 	private int burnTime = 0;
 	private int maxBurnTime = 0;
@@ -57,60 +57,7 @@ public class TileEntityGeneratorStirling extends TileEntityMachine
 			this.markDirty();
 		}
 		
-		if (container.getStoredPower() > 0)
-		{
-			List<ITeslaConsumer> consumers = new ArrayList<ITeslaConsumer>();
-			
-			ItemStack chargeStack = inventory.getStackInSlot(1);
-			
-			if (chargeStack != null)
-			{
-				ITeslaConsumer cap = chargeStack.getCapability(TeslaCapabilities.CAPABILITY_CONSUMER, null);
-				
-				if (cap != null) consumers.add(cap);
-			}
-			
-			List<ITeslaConsumer> neighbors = this.getNeighborCaps(TeslaCapabilities.CAPABILITY_CONSUMER, pos, this.worldObj);
-			
-			for (ITeslaConsumer neighbor : neighbors)
-			{
-				if (neighbor != null) consumers.add(neighbor);
-			}
-			
-			if (!consumers.isEmpty())
-			{
-				for(ITeslaConsumer consumer : consumers)
-				{
-					long powerToGive = consumer.givePower(container.getStoredPower(), true);
-					
-					consumer.givePower(getContainer().takePower(powerToGive, false), false);
-				}
-				
-				markDirty();
-			}
-		}
-	}
-	
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if (capability == TeslaCapabilities.CAPABILITY_PRODUCER)
-		{
-			return (T) container;
-		}
-		
-		return super.getCapability(capability, facing);
-	}
-	
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if (capability == TeslaCapabilities.CAPABILITY_PRODUCER)
-		{
-			return true;
-		}
-		
-		return super.hasCapability(capability, facing);
+		super.update();
 	}
 	
 	@Override
